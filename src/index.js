@@ -42,6 +42,7 @@ class Game extends React.Component {
       }],
       stepNumber: 0,
       xIsNext: true,
+      ascend: true,
     };
   }
 
@@ -79,6 +80,12 @@ class Game extends React.Component {
     return false;
   }
 
+  toggleOrder() {
+    this.setState({
+      ascend: !this.state.ascend
+    });
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
@@ -91,7 +98,8 @@ class Game extends React.Component {
       return (
         <li key={move}>
           <button onClick={() =>  this.jumpTo(move)}
-                  style={{"fontWeight": this.isSelected(move)? "bold": "normal"}}>{desc}</button>
+                  style={{"fontWeight": this.isSelected(move) ? "bold": "normal",
+                          "transform": this.state.ascend ? "none": "rotate(180deg)"}}>{desc}</button>
         </li>
       );
     });
@@ -114,7 +122,10 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <button onClick={()=>this.toggleOrder()}>
+            reverse order
+          </button>
+          <ul style={{"transform": this.state.ascend ? "none": "rotate(180deg)"}}>{moves}</ul>
         </div>
       </div>
     );
